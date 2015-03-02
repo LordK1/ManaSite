@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+{% block content %}
+
+    <div class="col-md-10 col-sm-9">
+        <img src="{{ post.photo.url }}" class="img-responsive"/>
+
+        <div class="lead">
+            <h3>{{ post.title | safe }} </h3>
+        </div>
+        <h4>{{ post.lead | safe }}</h4>
+
+        <div class="col-xs-12">
+            <h4>
+                <span class="label label-default">
+                    <a href="{{ post.category.get_absolute_url }}">
+                        {{ post.category }}
+                    </a>
+                </span>
+            </h4>
+        </div>
+        <div class="col-xs-10">
+            {{ post.content }}
+        </div>
+
+        <div class="col-xs-3 pull-right">
+            <small style="font-family:courier,'new courier';" class="text-muted">
+                Published on : {{ post.created_date }}
+            </small>
+        </div>
+    </div>
+{% endblock %}

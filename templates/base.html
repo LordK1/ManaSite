@@ -32,17 +32,17 @@
         <nav class="collapse navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="{% url 'beer_list' %}">Beeers List</a>
+                    <a href="{% url 'post-list' %}">Posts</a>
                 </li>
                 <li>
-                    <a href="{% url 'brewery_list' %}">Brewery List</a>
+                    <a href="{% url 'category-list' %}">Categories</a>
                 </li>
-                <li>
+                {% comment %}<li>
                     <a href="#">Category</a>
                 </li>
                 <li>
                     <a href="#">Category</a>
-                </li>
+                </li>{% endcomment %}
             </ul>
             <ul class="nav navbar-right navbar-nav">
                 <li class="dropdown">
@@ -69,24 +69,12 @@
                 <h1>
                     ManaSite
                     <p class="lead">
-                        this site is collection of Beers and Brewery !!!
+                        this site is collection of Post and Category !!!
                     </p>
                 </h1>
             </div>
 
 
-            {% comment %}<div class="col-md-5">
-                <div class="well-lg well">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h1>
-                                Bobo Bobo !!!
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-
-            </div>{% endcomment %}
         </div>
         <!--/row -->
     </div>
@@ -108,11 +96,9 @@
             <div class="panel">
                 <div class="panel-body">
                     {% block content %}
-
+                        <a href="/" class="btn btn-primary pull-right btnNext">More <i
+                                class="glyphicon glyphicon-chevron-right"></i></a>
                     {% endblock %}
-
-                    <a href="/" class="btn btn-primary pull-right btnNext">More <i
-                            class="glyphicon glyphicon-chevron-right"></i></a>
 
                 </div>
                 <!--panel body -->

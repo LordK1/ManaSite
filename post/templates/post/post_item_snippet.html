@@ -1,0 +1,40 @@
+{% load thumbnail %}
+<style type="text/css">
+    .bordered {
+    }
+</style>
+<div class="bordered row">
+    <div class="col-md-3 col-sm-3 bordered">
+        <a href="{{ post.get_absolute_url }}">
+            {% thumbnail post.photo "270x170" crop="center" as photo %}
+                <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" class="img-thumbnail">
+            {% endthumbnail %}
+
+        </a>
+    </div>
+
+    <div class="col-md-9 col-sm-9">
+        <h3>{{ post.title | safe }} </h3>
+
+        <div class="row bordered">
+            <div class="col-m-12">
+                <span class="label label-default">
+                    <a href="{{ post.category.get_absolute_url }}">
+                        {{ post.category }}
+                    </a>
+                </span>
+            </div>
+            <div class="col-md-12">
+                <small style="font-family:courier,'new courier';" class="text-muted">
+                    Published on : {{ post.created_date }}
+                </small>
+            </div>
+            <div class="col-md-12">
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary pull-right btnNext">More <i
+                        class="glyphicon glyphicon-chevron-right"></i></a>
+            </div>
+
+        </div>
+        <br><br>
+    </div>
+</div>
