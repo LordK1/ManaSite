@@ -7,5 +7,6 @@ from post.views import HomePageView
 urlpatterns = patterns('',
                        url(r'^$', HomePageView.as_view(), name='home'),
                        url(r'^post/', include('post.urls')),
-                       url(r'^admin/', include(admin.site.urls))
+                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'^author/', include('author.urls'))
                        , ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

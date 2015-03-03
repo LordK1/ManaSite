@@ -15,9 +15,11 @@ class HomePageView(TemplateView):
 
 
 class PostListView(ListView):
+    model = Post
     template_name = 'post/post_list.html'
     queryset = Post.objects.all()
     context_object_name = 'posts'
+    paginate_by = '5'
 
 
 class PostDetailView(DetailView):
@@ -27,9 +29,11 @@ class PostDetailView(DetailView):
 
 
 class CategoryListView(ListView):
+    model = Category
     template_name = 'post/category_list.html'
     queryset = Category.objects.all()
     context_object_name = 'categories'
+    paginate_by = '5'
 
 
 class CategoryDetailView(DetailView):

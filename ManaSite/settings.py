@@ -27,9 +27,10 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# provide our get_profile()
+AUTH_PROFILE_MODULE = 'author.Author'
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'post',
+    'author',
 )
 
 MIDDLEWARE_CLASSES = (
