@@ -5,3 +5,5 @@ local_settings.py
 
 # Ignore database
 db.sqlite3
+
+media

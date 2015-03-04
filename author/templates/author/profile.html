@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}
+    {{ author }}
+{% endblock %}
+{% block content %}
+
+    <div class="col-md-10 col-sm-9">
+        <img src="{{ author.photo.url }}" class="img-responsive"/>
+
+        <div class="lead">
+            <h3>{{ author.user | safe }} </h3>
+        </div>
+        <h4>{{ author.first_name }} - {{ author.last_name }}</h4>
+
+        {% comment %}<div class="col-xs-12">
+            <h4>
+                <span class="label label-default">
+                    <a href="{{ author.category.get_absolute_url }}">
+                        {{ post.category }}
+                    </a>
+                </span>
+            </h4>
+        </div>
+        <div class="col-xs-10">
+            {{ post.content }}
+        </div>
+
+        <div class="col-xs-3 pull-right">
+            <small style="font-family:courier,'new courier';" class="text-muted">
+                Published on : {{ post.created_date }}
+            </small>
+        </div>
+    </div>{% endcomment %}
+{% endblock %}

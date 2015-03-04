@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView, DetailView
 
 from author.forms import RegistrationForm, ContactForm
+from author.models import Author
 
 
 class RegistrationFormView(FormView):
@@ -10,42 +12,36 @@ class RegistrationFormView(FormView):
     form_class = RegistrationForm
     success_url = '/'
 
+    def __init__(self, **kwargs):
+        super(RegistrationFormView, self).__init__(**kwargs)
+
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed
-        # It should return an HttpResponse
-        print('<><<><><<><><><><><> form is valid  !')
+        print(' form is valid  !')
+        form.send_email()
+
+        # if self.request.user.is_authenticated():
+        # return HttpResponseRedirect('/')
 
         user = User.objects.create_user(
-            username=form.cleaned_data['username'],
-            password=form.cleaned_data['password'],
-            email=form.cleaned_data['email'])
+            username=form.cleaned_data.get('username'),
+            password=form.cleaned_data.get('password'),
+            email=form.cleaned_data.get('email'))
 
         user.save()
         author = form.save(commit=False)
-        # commit=False tells Django that "Don't send this to database yet.
-        # I have more things I want to do with it."
-        author.user = self.request.user
+        author.user = user
+        author.photo = self.get_form_kwargs().get('files').get('photo')
+        self.id = author.pk
         author.save()
 
-        return super(RegistrationFormView, self).form_valid(form)
+        return HttpResponseRedirect(author.get_absolute_url())
 
     def form_invalid(self, form):
-        print('=)=)=)=)=)=)=)=)=)=)=)=)=)=)=)  form invalid called !!!')
+        print(' form invalid called !!!')
         return super(RegistrationFormView, self).form_invalid(form)
 
-        # def post(self, request, *args, **kwargs):
-        # print('>>>>>>>>>>>>>>>>>>>>>>>>> form post method called !!!', request.user.is_authenticated())
-        #
-        #     if request.user.is_authenticated():
-        #         return HttpResponseRedirect(self.success_url)
-        #     form = RegistrationForm(self.request.POST)
-        #     if form.is_valid():
-        #         user = User.objects.create_user(username=form.cleaned_data['username'],
-        #                                         password=form.cleaned_data['password'],
-        #                                         email=form.cleaned_data['email'])
-        #         user.save
-        #
-        #     return super(RegistrationFormView, self).post(request, *args, **kwargs)
+    def get_success_url(self):
+        return reverse('author-profile', kwargs={'pk': self.id})
 
 
 class ContactFormView(FormView):
@@ -62,3 +58,10 @@ class ContactFormView(FormView):
         print('cc_myself', self.request.POST['cc_myself'])
         form.send_email()
         return super(ContactFormView, self).form_valid()
+
+
+class AuthorProfile(DetailView):
+    template_name = 'author/profile.html'
+    model = Author
+    context_object_name = 'author'
+
