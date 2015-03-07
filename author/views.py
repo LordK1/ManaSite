@@ -1,7 +1,9 @@
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.views.generic import FormView, TemplateView, DetailView
+from django.views.generic.list import ListView
 
 from author.forms import RegistrationForm, ContactForm
 from author.models import Author
@@ -19,8 +21,8 @@ class RegistrationFormView(FormView):
         print(' form is valid  !')
         form.send_email()
 
-        # if self.request.user.is_authenticated():
-        # return HttpResponseRedirect('/')
+        if self.request.user.is_authenticated():
+            return HttpResponseRedirect('/')
 
         user = User.objects.create_user(
             username=form.cleaned_data.get('username'),
@@ -31,10 +33,18 @@ class RegistrationFormView(FormView):
         author = form.save(commit=False)
         author.user = user
         author.photo = self.get_form_kwargs().get('files').get('photo')
-        self.id = author.pk
+        # self.id = author.pk
         author.save()
-
-        return HttpResponseRedirect(author.get_absolute_url())
+        if user is not None:
+            if user.is_active():
+                login(self.request, user)
+                return HttpResponseRedirect(author.get_absolute_url())
+            else:
+                # Return a 'disabled account' error message
+                return HttpResponseRedirect("Return a 'disabled account' error message")
+        else:
+            # Return an 'invalid login' error message.
+            return HttpResponseRedirect("Return an 'invalid login' error message.")
 
     def form_invalid(self, form):
         print(' form invalid called !!!')
@@ -60,8 +70,38 @@ class ContactFormView(FormView):
         return super(ContactFormView, self).form_valid()
 
 
+class AuthorListView(ListView):
+    template_name = 'author/list.html'
+    model = Author
+    context_object_name = 'authors'
+
+
 class AuthorProfile(DetailView):
     template_name = 'author/profile.html'
     model = Author
     context_object_name = 'author'
+
+
+def login(request):
+    if request.method != 'POST':
+        raise Http404('Only POST are allowed !!!')
+    try:
+        author = Author.objects.get(username=request.POST.get('username'))
+        if author.user.password == request.POST.get('password'):
+            request.session['author_id'] = author.id
+            return HttpResponseRedirect(author.get_absolute_url())
+    except Author.DoesNotExist:
+        return HttpResponseRedirect("Your username and password didn't match.")
+
+
+def logout(request):
+    try:
+        del request.session['author_id']
+    except KeyError:
+        pass
+    return HttpResponseRedirect("/")
+
+
+
+
 

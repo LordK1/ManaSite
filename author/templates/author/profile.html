@@ -3,33 +3,50 @@
 {% block title %}
     {{ author }}
 {% endblock %}
+{% block extrahead %}
+    <style type="text/css">
+        .lead {
+            height: 45px !important;
+        }
+
+    </style>
+
+{% endblock %}
 {% block content %}
 
-    <div class="col-md-10 col-sm-9">
+    <div class="col-md-12 col-sm-12">
+
         <img src="{{ author.photo.url }}" class="img-responsive"/>
 
-        <div class="lead">
-            <h3>{{ author.user | safe }} </h3>
-        </div>
-        <h4>{{ author.first_name }} - {{ author.last_name }}</h4>
+        <div class="panel well">
+            {{ author.user.is_authenticated }}
+            {% if author.user.user_logged_in %}
+                <p> You are logged in !</p>
 
-        {% comment %}<div class="col-xs-12">
-            <h4>
+            {% endif %}
+            <div class="lead">
+                <h3>{{ author.first_name }} {{ author.last_name }}</h3>
+            </div>
+            <h4>Email : {{ author.email }}</h4>
+
+            <div class="col-m-12">
                 <span class="label label-default">
-                    <a href="{{ author.category.get_absolute_url }}">
-                        {{ post.category }}
-                    </a>
+                    Posts count : {{ author.get_post_count }}
                 </span>
-            </h4>
-        </div>
-        <div class="col-xs-10">
-            {{ post.content }}
-        </div>
+            </div>
+            {% for category in author.get_categories %}
+                <div class="col-m-12">
+                <span class="label label-default">
+                    {{ category }}
+                </span>
+                </div>
+            {% endfor %}
 
-        <div class="col-xs-3 pull-right">
-            <small style="font-family:courier,'new courier';" class="text-muted">
-                Published on : {{ post.created_date }}
-            </small>
+            <h6>Created On : {{ author.created_date }}</h6>
         </div>
-    </div>{% endcomment %}
+    </div>
+    {% for post in author.posts.all %}
+        {% include 'post/post_item_snippet.html' with post=post %}
+    {% endfor %}
+
 {% endblock %}

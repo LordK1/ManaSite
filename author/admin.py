@@ -7,4 +7,4 @@ from author.models import Author
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'photo')
     search_fields = ('user', 'first_name', 'last_name', 'email')
-    list_filter = ('create_date',)
+    list_filter = ('created_date',)

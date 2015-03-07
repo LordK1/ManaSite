@@ -1,9 +1,7 @@
 {% load thumbnail %}
 <style type="text/css">
-    .bordered {
-    }
 </style>
-<div class="bordered row">
+<div class="row">
     <div class="col-md-3 col-sm-3 bordered">
         <a href="{{ post.get_absolute_url }}">
             {% thumbnail post.photo "270x170" crop="center" as photo %}
@@ -14,16 +12,26 @@
     </div>
 
     <div class="col-md-9 col-sm-9">
-        <h3>{{ post.title | safe }} </h3>
+        <a href="{{ post.get_absolute_url }}">
+            <h3>{{ post.title | safe }} </h3>
+        </a>
 
-        <div class="row bordered">
+        <div>
             <div class="col-m-12">
                 <span class="label label-default">
                     <a href="{{ post.category.get_absolute_url }}">
-                        {{ post.category }}
+                        {{ post.category }} - {{ post.category.get_post_count }}
+
                     </a>
                 </span>
             </div>
+            Authors :
+            {% for author in post.authors.all %}
+                <a class="" href="{{ author.get_absolute_url }}">
+                    {{ author.first_name }} {{ author.last_name }} |
+                </a>
+            {% endfor %}
+
             <div class="col-md-12">
                 <small style="font-family:courier,'new courier';" class="text-muted">
                     Published on : {{ post.created_date }}

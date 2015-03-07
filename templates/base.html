@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles thumbnail %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -38,8 +38,14 @@
                     <a href="{% url 'category-list' %}">Categories</a>
                 </li>
                 <li>
-                    <a href="{% url 'author-register' %}">Register</a>
+                    <a href="{% url 'author-list' %}">Authors</a>
                 </li>
+                {% if not user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'author-register' %}">Register</a>
+                    </li>
+                {% endif %}
+
                 <li>
                     <a href="{% url 'author-contact' %}">Contact Us</a>
                 </li>
@@ -50,12 +56,39 @@
                             class="glyphicon glyphicon-search"></i></a>
                     <ul class="dropdown-menu" style="padding:12px;">
                         <form class="form-inline">
-                            <button type="submit" class="btn btn-default pull-right"><i
-                                    class="glyphicon glyphicon-search"></i></button>
+                            <button type="submit" class="btn btn-default pull-right">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
                             <input type="text" class="form-control pull-left" placeholder="Search">
                         </form>
                     </ul>
                 </li>
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{{ user.author.get_absolute_url }}">
+                            {% thumbnail user.author.photo "20x20" crop="center" as photo %}
+                                <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}"
+                                     class="img-rounded">
+                            {% endthumbnail %}
+
+                            {{ user.username }}
+
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}">
+                            <i class="glyphicon glyphicon-log-out"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a data-toggle="modal" data-target="#login-overlay">
+                            <i class="glyphicon glyphicon-log-in"></i>
+                        </a>
+                    </li>
+                {% endif %}
+
             </ul>
 
         </nav>
@@ -69,7 +102,7 @@
                 <h1>
                     ManaSite
                     <p class="lead">
-                        this site is collection of Post and Category !!!
+                        this site is collection of Post and Category !!!<br>
                     </p>
                 </h1>
             </div>
@@ -135,6 +168,7 @@
         </div>
     </div>
 </div>
+{% include 'author/login.html' %}
 <footer>
     <div class="container">
         <div class="row">

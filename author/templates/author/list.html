@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}
+    Authors
+{% endblock %}
+{% block content %}
+
+    {% for author in authors %}
+        {% include 'author/author_item.html' with author=author %}
+    {% endfor %}
+
+{% endblock %}
