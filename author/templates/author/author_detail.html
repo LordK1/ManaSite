@@ -17,11 +17,12 @@
     <div class="col-md-12 col-sm-12">
 
         <img src="{{ author.photo.url }}" class="img-responsive"/>
+        <p>Username : {{ request.user.is_authenticated }}</p>
+
 
         <div class="panel well">
-            {{ author.user.is_authenticated }}
-            {% if author.user.user_logged_in %}
-                <p> You are logged in !</p>
+            {% if author.user.username == requset.user.username %}
+                <H2> Wellcome to your profile author.user.username !!!</h2>
 
             {% endif %}
             <div class="lead">
@@ -31,7 +32,7 @@
 
             <div class="col-m-12">
                 <span class="label label-default">
-                    Posts count : {{ author.get_post_count }}
+                    Posts count : { { author.get_post_count }}
                 </span>
             </div>
             {% for category in author.get_categories %}
@@ -43,6 +44,7 @@
             {% endfor %}
 
             <h6>Created On : {{ author.created_date }}</h6>
+            <h6>Last Login : {{ author.user.last_login }}</h6>
         </div>
     </div>
     {% for post in author.posts.all %}

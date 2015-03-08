@@ -70,6 +70,12 @@ class RegistrationForm(ModelForm):
         )
 
 
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = '__all__'
+
+
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100)
     message = forms.CharField(widget=forms.Textarea)

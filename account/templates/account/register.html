@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}
+    Register
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <div class="well">
+                {% if form.errors %}
+                    <p class="errors errorlist">{{ form.errors }}</p>
+                {% endif %}
+                <form id="registerForm" method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% comment %}{{ form.as_p }}{% endcomment %}
+                    <div class="form-group">
+                        <label for="username" class="control-label">Username : </label>
+                        <input type="text" class="form-control" id="username" name="username" value=""
+                               required="" title="Please enter your username"
+                               placeholder="example">
+                        <span class="help-block">{{ form.usernam.help }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="control-label">Email : </label>
+                        <input type="email" class="form-control" id="username" name="email" value=""
+                               required="" title="Please enter you Email Address"
+                               placeholder="example@gmail.com">
+                        <span class="help-block">{{ form.email.help }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label">Password : </label>
+                        <input type="password" class="form-control" id="password" name="password1" value=""
+                               title="Please enter your Password"
+                                >
+                        <span class="help-block">{{ form.password.help }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password2" class="control-label">Confirm Password : </label>
+                        <input type="password" class="form-control" id="password2" name="password2" value=""
+                               title="Please your password again"
+                                >
+                        <span class="help-block">{{ form.password.help }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstNameInput" class="control-label">First Name : </label>
+                        <input type="text" class="form-control" id="firstNameInput" name="first_name" value=""
+                               title="Please enter your First Name"
+                                >
+                        <span class="help-block">{{ form.first_name.help }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastNameInput" class="control-label">Last Name : </label>
+                        <input type="text" class="form-control" id="lastNameInput" name="last_name" value=""
+                               title="Please enter your Last Name"
+                                >
+                        <span class="help-block">{{ form.last_name.help }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="photoInput" class="control-label">Photo : </label>
+                        <input type="file" class="form-control" id="lastNameInput" name="photo" value=""
+                               title="Please choice your photo"
+                                >
+                        <span class="help-block">{{ form.photo.help }}</span>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
+{% endblock %}

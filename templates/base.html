@@ -42,13 +42,13 @@
                 </li>
                 {% if not user.is_authenticated %}
                     <li>
-                        <a href="{% url 'author-register' %}">Register</a>
+                        <a href="{% url 'register' %}">Register</a>
                     </li>
                 {% endif %}
 
-                <li>
+                {% comment %}<li>
                     <a href="{% url 'author-contact' %}">Contact Us</a>
-                </li>
+                </li>{% endcomment %}
             </ul>
             <ul class="nav navbar-right navbar-nav">
                 <li class="dropdown">
@@ -66,7 +66,7 @@
                 {% if user.is_authenticated %}
                     <li>
                         <a href="{{ user.author.get_absolute_url }}">
-                            {% thumbnail user.author.photo "20x20" crop="center" as photo %}
+                            {% thumbnail user.photo "20x20" crop="center" as photo %}
                                 <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}"
                                      class="img-rounded">
                             {% endthumbnail %}
@@ -83,7 +83,8 @@
                     </li>
                 {% else %}
                     <li>
-                        <a data-toggle="modal" data-target="#login-overlay">
+                    {% comment %}<a data-toggle="modal" data-target="#login-overlay">{% endcomment %}
+                        <a href="{% url 'login' %}">
                             <i class="glyphicon glyphicon-log-in"></i>
                         </a>
                     </li>
@@ -168,7 +169,7 @@
         </div>
     </div>
 </div>
-{% include 'author/login.html' %}
+{#{% include 'author/login.html' %}#}
 <footer>
     <div class="container">
         <div class="row">

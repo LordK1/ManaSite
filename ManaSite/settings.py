@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'post',
     'author',
+    'account',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,4 +103,4 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
 
-LOGIN_REDIRECT_URL = "/"
+AUTH_USER_MODEL = 'account.Account'

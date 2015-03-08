@@ -1,13 +1,10 @@
 from django.conf.urls import patterns, url
 
-from author.views import ContactFormView, RegistrationFormView, AuthorProfile, AuthorListView
+from author.views import AuthorDetailView, AuthorListView
 
 
 __author__ = 'k1'
 
 urlpatterns = patterns('',
-                       url(r'^registration/$', RegistrationFormView.as_view(), name='author-register'),
-                       url(r'^contact/$', ContactFormView.as_view(), name='author-contact'),
                        url(r'^list/$', AuthorListView.as_view(), name='author-list'),
-                       url(r'^(?P<pk>\d+)/$', AuthorProfile.as_view(), name='author-profile'),
-                       )
+                       url(r'^(?P<pk>\d+)/$', AuthorDetailView.as_view(), name='author-detail'),)
