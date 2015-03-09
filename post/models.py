@@ -41,7 +41,7 @@ class Category(models.Model):
 class PostManager(models.Manager):
     def title_count(self, keyword):
         return self.filter(title__icontains=keyword).count()
-
+        
 
 class Post(models.Model):
     title = models.CharField(max_length=100, blank=False)

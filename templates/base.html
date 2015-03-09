@@ -83,7 +83,7 @@
                     </li>
                 {% else %}
                     <li>
-                    {% comment %}<a data-toggle="modal" data-target="#login-overlay">{% endcomment %}
+                        {% comment %}<a data-toggle="modal" data-target="#login-overlay">{% endcomment %}
                         <a href="{% url 'login' %}">
                             <i class="glyphicon glyphicon-log-in"></i>
                         </a>
@@ -130,8 +130,7 @@
             <div class="panel">
                 <div class="panel-body">
                     {% block content %}
-                        <a href="/" class="btn btn-primary pull-right btnNext">More <i
-                                class="glyphicon glyphicon-chevron-right"></i></a>
+
                     {% endblock %}
 
                 </div>
@@ -191,5 +190,7 @@
 </footer>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block Script %}{% endblock %}
 </body>
+
 </html>

@@ -37,12 +37,34 @@
                     Published on : {{ post.created_date }}
                 </small>
             </div>
-            <div class="col-md-12">
-                <a href="{{ post.get_absolute_url }}" class="btn btn-primary pull-right btnNext">More <i
-                        class="glyphicon glyphicon-chevron-right"></i></a>
-            </div>
+            <div class="col-md-6">
+                <div class="col-md-3">
+                    <button id="likeButton" onclick="likePost()"
+                            data-post-url="{% url 'like-post' pk=post.pk %}" data-post-id="{{ post.pk }}"
+                            data-post-slug="{{ post.slug }}"
+                            class="btn btn-primary btn-success"><span class="glyphicon glyphicon-thumbs-up"></span>
+                        Like
+                    </button>
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                    <button onclick="dislikePost()" id="dislikeButton" data-post-id="{{ post.id }}"
+                            data-post-slug="{{ post.slug }}"
+                            class="btn btn-primary btn-danger"><span
+                            class="glyphicon glyphicon-thumbs-down"></span>
+                        Dislike
+                    </button>
+                </div>
 
+            </div>
+            <div class="col-md-6">
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary pull-right btnNext">
+                    More <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
         </div>
-        <br><br>
+        <br>
     </div>
 </div>
+<hr>

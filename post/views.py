@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect, JsonResponse
 
 # Create your views here.
 from django.views.generic import TemplateView, ListView, DetailView
@@ -40,3 +41,4 @@ class CategoryDetailView(DetailView):
     model = Category
     template_name = 'post/category_detail.html'
     context_object_name = 'category'
+

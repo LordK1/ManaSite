@@ -11,5 +11,6 @@ urlpatterns = patterns('',
                        url(r'^post/', include('post.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^author/', include('author.urls')),
-                       url(r'^account/', include('account.urls'))
+                       url(r'^account/', include('account.urls')),
+                       url(r'^community/', include('community.urls'))
                        , ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

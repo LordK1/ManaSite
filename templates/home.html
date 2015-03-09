@@ -2,15 +2,57 @@
 {% block title %}
     Home
 {% endblock %}
+{% block extrahead %}
+
+{% endblock %}
 {% block content %}
     <div class="row">
         <br>
         {% for post in posts %}
 
-                {% include 'post/post_item_snippet.html' with post=post %}
+            {% include 'post/post_item_snippet.html' with post=post %}
 
         {% endfor %}
     </div>
-    <!-- row -->
-    <hr>
+
+    <!-- row - home -->
+{% endblock %}
+{% block Script %}
+    <script type="text/javascript">
+        {% comment %} LIKE BUTTON{% endcomment %}
+        function likePost() {
+            var postId = $("#likeButton").attr("data-post-id");
+            var postSlug = $("#likeButton").attr("data-post-slug");
+            var url = "{% url 'like-post' pk='123456' %}".replace('123456', postId.toString());
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function (result) {
+                    console.log("result " + result + " URL : " + url);
+                    {#                    var obj = JSON.parse(result);#}
+                    console.log('title : ' + result.title + ' slug : ' + result.slug + ' Id : ' + result.id);
+                },
+                failure: function (data) {
+                    alert('Got an Error !!!');
+                }
+            });
+        }
+        {% comment %} DISLIKE BUTTON {% endcomment %}
+        function dislikePost() {
+            var postId = $("#dislikeButton").attr("data-post-id");
+            var postSlug = $("#dislikeButton").attr("data-post-slug");
+            var url = "{% url 'like-post' pk='123456' %}".replace('123456', postId.toString());
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function (result) {
+                    console.log("disLikePost : " + result + " for URL : " + url);
+                },
+                failure: function (data) {
+                    console.warn('dislikePost ' + postId + 'Go an Error');
+                }
+
+            });
+        }
+    </script>
 {% endblock %}

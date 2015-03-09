@@ -19,7 +19,7 @@ class Author(models.Model):
     objects = AuthorManager()
 
     def __str__(self):
-        return self.account.get_full_name()
+        return self.account.email
 
     def get_absolute_url(self):
         return reverse('author-detail', kwargs={'pk': self.pk})
@@ -32,3 +32,7 @@ class Author(models.Model):
 
     def get_post_count(self):
         return self.posts.all().count()
+
+    def get_full_name(self):
+        return self.account.get_full_name()
+

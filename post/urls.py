@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, url
+
 from post.views import PostListView, PostDetailView, CategoryListView, CategoryDetailView
+
 
 __author__ = 'k1'
 
