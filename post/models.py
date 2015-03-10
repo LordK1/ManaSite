@@ -11,7 +11,11 @@ UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'photos')
 
 
 class CategoryManager(models.Manager):
-    pass
+    def get_queryset(self):
+        return super(CategoryManager, self).get_queryset()
+
+    def get_posts(self, category):
+        return self.get(category).posts.all()
 
 
 class Category(models.Model):
@@ -39,9 +43,12 @@ class Category(models.Model):
 
 
 class PostManager(models.Manager):
+    def get_queryset(self):
+        return super(PostManager, self).get_queryset()
+
     def title_count(self, keyword):
         return self.filter(title__icontains=keyword).count()
-        
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100, blank=False)

@@ -16,8 +16,8 @@ class Follow(models.Model):
 
 class LikeManager(models.Manager):
     def create_for_post(self, post, author):
-        like_set = self.filter(post=post, author=author)
-        # print('like_set', like_set)
+        like_set = self.filter(post=post)
+        print('like_set', like_set)
         if not like_set:
             like = Like(post=post, author=author)
             like.numerator += 1
@@ -38,8 +38,8 @@ class LikeManager(models.Manager):
 
         return like.numerator
 
-    def get_queryset(self, post):
-        return super(LikeManager, self).get_queryset().filter(post=post)
+    def get_queryset(self):
+        return super(LikeManager, self).get_queryset()
 
 
 class Like(models.Model):
@@ -47,7 +47,6 @@ class Like(models.Model):
     post = models.ForeignKey(Post, related_name='likes')
     numerator = models.PositiveIntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
-
     objects = LikeManager()
 
     class Meta:

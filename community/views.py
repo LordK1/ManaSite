@@ -29,22 +29,50 @@ class LikePostView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, Tem
     def get_ajax(self, request, *args, **kwargs):
         # print('get_ajax : ' + kwargs.get('pk'))
         post = Post.objects.get(pk=kwargs.get('pk'))
-        # print('get_ajax', post, ' USer : ', request.user)
+        print('get_ajax', post.id, ' USer : ', request.user)
         author = Author.objects.get(account=request.user)
-        # print('Author', author)
+        print('Author', author)
 
-        like = Like.objects.create_for_post(post, author)
-        print('like', like.numerator, 'likes : ', Like.objects.get(post=post).numerator)
+        likes = Like.objects.filter(post=post, author=author)
+        print('likes', likes)
+        if likes:
+            print('liked before', likes)
+        else:
+            Like(post=post, author=author).save()
+            print("New Like saved : ", Like.objects.get(post=post, author=author))
 
         data = {
             'title': post.title,
             'slug': post.slug,
             'id': post.id,
+            'likes': post.likes.count()
         }
 
         return self.render_json_response(data)
 
 
-class DisLikePostView(JSONResponseMixin, TemplateView):
-    def get(self, request, *args, **kwargs):
-        print('DisLikePostView', kwargs.get('pk'))
+class DisLikePostView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, TemplateView):
+    """
+    When user Dislike specified post like should remove and count update.
+    """
+    login_url = reverse_lazy('login')
+
+    def get_ajax(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=kwargs.get('pk'))
+        author = Author.objects.get(account=request.user)
+        likes = list(Like.objects.filter(post=post, author=author))
+        if likes:
+            like = likes[0]
+            print('liked before ', like)
+            like.delete()
+
+        else:
+            print('no Like find !!!')
+
+        data = {
+            'title': post.title,
+            'slug': post.slug,
+            'id': post.id,
+            'likes': post.likes.count()
+        }
+        return self.render_json_response(data)

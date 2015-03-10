@@ -112,9 +112,37 @@
     <table name="author_author" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="account_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="last_post_publish_date" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="post_count" sqlType="INTEGER UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_author_author_1" columns="account_id" ref-table="account_account" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_community_follow_1" table="community_follow" schema="" catalog="" columns="follower_id"/>
+      <exported-key name="#FAKE_community_follow_2" table="community_follow" schema="" catalog="" columns="followed_id"/>
+      <exported-key name="#FAKE_community_like_2" table="community_like" schema="" catalog="" columns="author_id"/>
       <exported-key name="#FAKE_post_post_authors_2" table="post_post_authors" schema="" catalog="" columns="author_id"/>
+    </table>
+    <table name="community_follow" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_date" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="followed_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="follower_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_community_follow_1" columns="follower_id" ref-table="author_author" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_community_follow_2" columns="followed_id" ref-table="author_author" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="community_follow_6bde7ca3" unique="true" columns="follower_id"/>
+      <index name="community_follow_f890d2be" unique="true" columns="followed_id"/>
+    </table>
+    <table name="community_like" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="numerator" sqlType="INTEGER UNSIGNED" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_date" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="author_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="post_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_community_like_1" columns="post_id" ref-table="post_post" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_community_like_2" columns="author_id" ref-table="author_author" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="community_like_f3aa1999" unique="true" columns="post_id"/>
+      <index name="community_like_4f331e2f" unique="true" columns="author_id"/>
     </table>
     <table name="django_admin_log" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
@@ -175,6 +203,7 @@
       <column name="status" sqlType="VARCHAR(1)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_post_post_1" columns="category_id" ref-table="post_category" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_community_like_1" table="community_like" schema="" catalog="" columns="post_id"/>
       <exported-key name="#FAKE_post_post_authors_1" table="post_post_authors" schema="" catalog="" columns="post_id"/>
       <index name="post_post_b583a629" unique="true" columns="category_id"/>
     </table>

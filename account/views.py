@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from braces.views import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login as auth_login, logout as auth_logoout, authenticate
@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 from django.views.generic import FormView, RedirectView, TemplateView
 from account.forms import AccountCreationForm
+from account.models import Account
 from author.forms import AuthorForm
 from author.models import Author
 
@@ -19,16 +20,21 @@ thanks for watching :-P
 '''
 
 
-class LoginRequiredMixin(object):
-    @classmethod
-    def as_view(cls, **initkwargs):
-        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
-        return login_required(view, login_url=reverse_lazy('login'))
-
-
-# New LoginView with GoDjango tutorial helps
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'account/dashboard.html'
+    object = Account
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        print('user', self.request.user)
+        context['user'] = self.request.user
+        context['account'] = self.object.objects.get_by_natural_key(self.request.user)
+        context['author'] = self.object.objects.get_author_by_natural_key(self.request.user)
+        return context
+
+    def get_queryset(self):
+        print('get_queryset', self.object.author_set.all())
+        return self.object.objects.all()
 
 
 # New LoginView with GoDjango tutorial helps

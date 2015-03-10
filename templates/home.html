@@ -19,40 +19,50 @@
 {% endblock %}
 {% block Script %}
     <script type="text/javascript">
-        {% comment %} LIKE BUTTON{% endcomment %}
-        function likePost() {
-            var postId = $("#likeButton").attr("data-post-id");
-            var postSlug = $("#likeButton").attr("data-post-slug");
-            var url = "{% url 'like-post' pk='123456' %}".replace('123456', postId.toString());
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function (result) {
-                    console.log("result " + result + " URL : " + url);
-                    {#                    var obj = JSON.parse(result);#}
-                    console.log('title : ' + result.title + ' slug : ' + result.slug + ' Id : ' + result.id);
-                },
-                failure: function (data) {
-                    alert('Got an Error !!!');
-                }
-            });
-        }
-        {% comment %} DISLIKE BUTTON {% endcomment %}
-        function dislikePost() {
-            var postId = $("#dislikeButton").attr("data-post-id");
-            var postSlug = $("#dislikeButton").attr("data-post-slug");
-            var url = "{% url 'like-post' pk='123456' %}".replace('123456', postId.toString());
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function (result) {
-                    console.log("disLikePost : " + result + " for URL : " + url);
-                },
-                failure: function (data) {
-                    console.warn('dislikePost ' + postId + 'Go an Error');
-                }
 
+        $(document).ready(function () {
+            {% comment %} LIKE BUTTON{% endcomment %}
+            $("button.likeButton").click(function () {
+                var animationClass = "animated bounce"
+                $("span[data-post-id=" + postId + "]").removeClass(animationClass);
+                var postId = $(this).attr("data-post-id");
+                var postSlug = $(this).attr("data-post-slug");
+                var url = "{% url 'like-post' pk='123456' %}".replace('123456', postId.toString());
+                {# console.log("Like Post ID : " + postId + " postSlug : " + postSlug + " URL : " + url);#}
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function (result) {
+                        {# console.log('title : ' + result.title + ' slug : ' + result.slug + ' Id : ' + result.id + ' likes count : ' + result.likes_count);#}
+                        $("span[data-post-id=" + postId + "]").addClass(animationClass).text(result.likes);
+                    },
+                    failure: function (data) {
+                        console.log("Like got an Error !!!")
+                    }
+                });
             });
-        }
+            {% comment %} DISLIKE BUTTON {% endcomment %}
+            $("button.dislikeButton").click(function () {
+                var animationClass = "animated swing"
+                var postId = $(this).attr("data-post-id");
+                var postSlug = $(this).attr("data-post-slug");
+                $("span[data-post-id=" + postId + "]").removeClass(animationClass);
+                var url = "{% url 'dislike-post' pk='123456' %}".replace('123456', postId.toString());
+                {# console.log("Like Post ID : " + postId + " postSlug : " + postSlug + " URL : " + url);#}
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function (result) {
+                        {# console.log('title : ' + result.title + ' slug : ' + result.slug + ' Id : ' + result.id + ' likes count : ' + result.likes);#}
+                        $("span[data-post-id=" + postId + "]").addClass(animationClass).text(result.likes);
+                    },
+                    failure: function (data) {
+                        console.warn('dislikePost ' + postId + 'Go an Error');
+                    }
+                });
+            });
+        });
+
+
     </script>
 {% endblock %}

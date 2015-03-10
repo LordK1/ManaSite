@@ -1,5 +1,9 @@
 {% load thumbnail %}
 <style type="text/css">
+    .text-muted-date {
+        font-size: larger;
+        font-family: courier, 'new courier';
+    }
 </style>
 <div class="row">
     <div class="col-md-3 col-sm-3 bordered">
@@ -16,7 +20,6 @@
             <h3>{{ post.title | safe }} </h3>
         </a>
 
-        <div>
             <div class="col-m-12">
                 <span class="label label-default">
                     <a href="{{ post.category.get_absolute_url }}">
@@ -27,31 +30,34 @@
             </div>
             Authors :
             {% for author in post.authors.all %}
-                <a class="" href="{{ author.get_absolute_url }}">
+                <a class="link" href="{{ author.get_absolute_url }}">
                     {{ author.first_name }} {{ author.last_name }} |
                 </a>
             {% endfor %}
 
             <div class="col-md-12">
-                <small style="font-family:courier,'new courier';" class="text-muted">
+                <p class="text-muted text-muted-date ">
                     Published on : {{ post.created_date }}
-                </small>
+                </p>
             </div>
             <div class="col-md-6">
                 <div class="col-md-3">
-                    <button id="likeButton" onclick="likePost()"
-                            data-post-url="{% url 'like-post' pk=post.pk %}" data-post-id="{{ post.pk }}"
+                    <button data-post-url="{% url 'like-post' pk=post.pk %}" data-post-id="{{ post.pk }}"
                             data-post-slug="{{ post.slug }}"
-                            class="btn btn-primary btn-success"><span class="glyphicon glyphicon-thumbs-up"></span>
+                            class="btn btn-primary btn-success likeButton"><span
+                            class="glyphicon glyphicon-thumbs-up"></span>
                         Like
                     </button>
                 </div>
                 <div class="col-md-3">
+                    <h4 data-post-id="{{ post.pk }}" id="{{ post.pk }}" class="like-counter">Likes :
+                        <span data-post-id="{{ post.pk }}">{{ post.likes.count }}</span>
+                    </h4>
                 </div>
                 <div class="col-md-3">
-                    <button onclick="dislikePost()" id="dislikeButton" data-post-id="{{ post.id }}"
+                    <button data-post-id="{{ post.id }}"
                             data-post-slug="{{ post.slug }}"
-                            class="btn btn-primary btn-danger"><span
+                            class="btn btn-primary btn-danger dislikeButton"><span
                             class="glyphicon glyphicon-thumbs-down"></span>
                         Dislike
                     </button>
@@ -63,7 +69,6 @@
                     More <i class="glyphicon glyphicon-chevron-right"></i>
                 </a>
             </div>
-        </div>
         <br>
     </div>
 </div>

@@ -5,6 +5,11 @@ from sorl.thumbnail import ImageField
 
 
 class AccountManager(BaseUserManager):
+    def get_queryset(self):
+        return super(AccountManager, self).get_queryset()
+
+    def get_author_by_natural_key(self, username):
+        return super(AccountManager, self).get_by_natural_key(username).author
 
     def create_user(self, username, email, password=None):
         if not email:
@@ -48,7 +53,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     city = models.CharField(max_length=100, blank=True)
 
-    object = AccountManager()
+    objects = AccountManager()
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -63,3 +69,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def __unicode__(self):
         return self.email
+
+
+
