@@ -11,7 +11,13 @@ class Follow(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "%s followed %s" % (self.followed, self.follower)
+        return "%s followed by %s" % (self.followed, self.follower)
+
+    class Meta:
+        unique_together = ('follower', 'followed')
+        ordering = ('created_date',)
+        verbose_name = 'Following'
+        verbose_name_plural = 'Following'
 
 
 class LikeManager(models.Manager):
@@ -47,7 +53,7 @@ class Like(models.Model):
     post = models.ForeignKey(Post, related_name='likes')
     numerator = models.PositiveIntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
-    objects = LikeManager()
+    # objects = LikeManager()
 
     class Meta:
         verbose_name = 'Like'

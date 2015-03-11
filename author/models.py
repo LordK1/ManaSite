@@ -4,7 +4,7 @@ from django.db import models
 
 
 class AuthorManager(models.Manager):
-
+    
     def get_queryset(self):
         return super(AuthorManager, self).get_queryset()
 
@@ -16,11 +16,11 @@ class AuthorManager(models.Manager):
 
 
 class Author(models.Model):
-    account = models.OneToOneField(settings.AUTH_USER_MODEL)
+    account = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name='Account', related_name='author')
     post_count = models.PositiveIntegerField(default=0)
     last_post_publish_date = models.DateTimeField(auto_now_add=True)
 
-    objects = AuthorManager()
+    # objects = AuthorManager()
 
     def __str__(self):
         return self.account.get_full_name()
@@ -40,3 +40,6 @@ class Author(models.Model):
     def get_full_name(self):
         return self.account.get_full_name()
 
+    class Meta:
+        verbose_name = 'Author'
+        verbose_name_plural = 'Authors'

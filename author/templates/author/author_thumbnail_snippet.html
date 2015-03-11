@@ -1,0 +1,16 @@
+{% load thumbnail %}
+{% comment %}<h5>{{ author.account.get_full_name }}</h5>{% endcomment %}
+<div class="col-md-2 portfolio-item">
+    <span data-author-id="{{ author.pk }}" class="portfolio-link follow-author" role="link">
+        <div class="caption">
+            <div class="caption-content">
+                <i class="fa fa-plus fa-3x"></i>
+            </div>
+        </div>
+        {% thumbnail author.account.photo "120x120" crop="center" as photo %}
+            <img class="img-responsive img-rounded" src="{{ photo.url }}"
+                 width="{{ photo.width }}"
+                 height="{{ photo.height }}" alt="">
+        {% endthumbnail %}
+    </span>
+</div>

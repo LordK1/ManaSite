@@ -1,18 +1,25 @@
 {% load thumbnail %}
-<style type="text/css">
-    .text-muted-date {
-        font-size: larger;
-        font-family: courier, 'new courier';
-    }
-</style>
+
 <div class="row">
-    <div class="col-md-3 col-sm-3 bordered">
+    <div class="col-md-3 col-sm-3 effect-zoe">
         <a href="{{ post.get_absolute_url }}">
-            {% thumbnail post.photo "270x170" crop="center" as photo %}
+            {% thumbnail post.photo "270x300" crop="center" as photo %}
                 <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" class="img-thumbnail">
             {% endthumbnail %}
-
         </a>
+
+        <div class="figcaption">
+            <h2>Mana<span>Site</span></h2>
+
+            <p class="icon-links">
+                <a href="#"><span class="icon-heart"></span></a>
+                <a href="#"><span class="icon-eye"></span></a>
+                <a href="#"><span class="icon-paper-clip"></span></a>
+            </p>
+
+            <p class="description">{{ post.lead | safe }}</p>
+
+        </div>
     </div>
 
     <div class="col-md-9 col-sm-9">
@@ -20,55 +27,57 @@
             <h3>{{ post.title | safe }} </h3>
         </a>
 
-            <div class="col-m-12">
-                <span class="label label-default">
+        <div class="col-m-12">
+            <h4>
+                <span class="label label-info">
                     <a href="{{ post.category.get_absolute_url }}">
                         {{ post.category }} - {{ post.category.get_post_count }}
-
                     </a>
                 </span>
+            </h4>
+        </div>
+        <div class="col-md-12">
+            <section id="portfolio">
+                <p class="title">Authors :</p>
+                {% for author in post.authors.all %}
+                    {% include 'author/author_thumbnail_snippet.html' with author=author %}
+                {% endfor %}
+            </section>
+        </div>
+        <div class="col-md-12">
+            <p class="text-muted text-muted-date ">
+                Published on : {{ post.created_date }}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-3">
+                <button data-post-url="{% url 'like-post' pk=post.pk %}" data-post-id="{{ post.pk }}"
+                        data-post-slug="{{ post.slug }}"
+                        class="btn btn-primary btn-success likeButton"><span
+                        class="fa fa-thumbs-up"></span>
+                    Like
+                </button>
             </div>
-            Authors :
-            {% for author in post.authors.all %}
-                <a class="link" href="{{ author.get_absolute_url }}">
-                    {{ author.first_name }} {{ author.last_name }} |
-                </a>
-            {% endfor %}
+            <div class="col-md-3">
+                <h4 data-post-id="{{ post.pk }}" id="{{ post.pk }}" class="like-counter">Likes :
+                    <span data-post-id="{{ post.pk }}">{{ post.likes.count }}</span>
+                </h4>
+            </div>
+            <div class="col-md-3">
+                <button data-post-id="{{ post.id }}"
+                        data-post-slug="{{ post.slug }}"
+                        class="btn btn-primary btn-danger dislikeButton"><span
+                        class="fa fa-thumbs-down"></span>
+                    Dislike
+                </button>
+            </div>
 
-            <div class="col-md-12">
-                <p class="text-muted text-muted-date ">
-                    Published on : {{ post.created_date }}
-                </p>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-3">
-                    <button data-post-url="{% url 'like-post' pk=post.pk %}" data-post-id="{{ post.pk }}"
-                            data-post-slug="{{ post.slug }}"
-                            class="btn btn-primary btn-success likeButton"><span
-                            class="glyphicon glyphicon-thumbs-up"></span>
-                        Like
-                    </button>
-                </div>
-                <div class="col-md-3">
-                    <h4 data-post-id="{{ post.pk }}" id="{{ post.pk }}" class="like-counter">Likes :
-                        <span data-post-id="{{ post.pk }}">{{ post.likes.count }}</span>
-                    </h4>
-                </div>
-                <div class="col-md-3">
-                    <button data-post-id="{{ post.id }}"
-                            data-post-slug="{{ post.slug }}"
-                            class="btn btn-primary btn-danger dislikeButton"><span
-                            class="glyphicon glyphicon-thumbs-down"></span>
-                        Dislike
-                    </button>
-                </div>
-
-            </div>
-            <div class="col-md-6">
-                <a href="{{ post.get_absolute_url }}" class="btn btn-primary pull-right btnNext">
-                    More <i class="glyphicon glyphicon-chevron-right"></i>
-                </a>
-            </div>
+        </div>
+        <div class="col-md-6">
+            <a href="{{ post.get_absolute_url }}" class="btn btn-primary pull-right btnNext">
+                More <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        </div>
         <br>
     </div>
 </div>

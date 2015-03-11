@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.generic import TemplateView
 
 from author.models import Author
-from community.models import Like
+from community.models import Like, Follow
 from post.models import Post
 
 
@@ -33,10 +33,10 @@ class LikePostView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, Tem
         author = Author.objects.get(account=request.user)
         print('Author', author)
 
-        likes = Like.objects.filter(post=post, author=author)
-        print('likes', likes)
-        if likes:
-            print('liked before', likes)
+        like_set = Like.objects.filter(post=post, author=author)
+        print('likes', like_set)
+        if like_set.exists():
+            print('liked before', like_set)
         else:
             Like(post=post, author=author).save()
             print("New Like saved : ", Like.objects.get(post=post, author=author))
@@ -60,9 +60,9 @@ class DisLikePostView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, 
     def get_ajax(self, request, *args, **kwargs):
         post = Post.objects.get(pk=kwargs.get('pk'))
         author = Author.objects.get(account=request.user)
-        likes = list(Like.objects.filter(post=post, author=author))
-        if likes:
-            like = likes[0]
+        like_set = list(Like.objects.filter(post=post, author=author))
+        if like_set.exists():
+            like = like_set[0]
             print('liked before ', like)
             like.delete()
 
@@ -75,4 +75,36 @@ class DisLikePostView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, 
             'id': post.id,
             'likes': post.likes.count()
         }
+        return self.render_json_response(data)
+
+
+class FollowAuthorView(LoginRequiredMixin, JSONResponseMixin, AjaxResponseMixin, TemplateView):
+    """
+    When a user want to fallow a author must be logged in
+    """
+    login_url = reverse_lazy('login')
+
+    def get_ajax(self, request, *args, **kwargs):
+        followed = Author.objects.get(pk=kwargs.get('pk'))
+        follower = Author.objects.get(account=request.user)
+
+        if followed != follower:
+            try:
+                follow = Follow.objects.get(follower=follower, followed=followed)
+                msg = 'follow found : ' + str(follow)
+
+            except Follow.DoesNotExist:
+                follow = Follow(follower=follower, followed=followed)
+                follow.save()
+                msg = 'New Follow saved !'
+
+        else:
+            msg = 'you cant follow yourself !!!'
+
+        data = {
+            'followed': followed.account.username,
+            'follower': follower.account.email,
+            'message': msg
+        }
+
         return self.render_json_response(data)

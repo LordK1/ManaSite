@@ -2,8 +2,145 @@
 {% block title %}
     Dashboard
 {% endblock %}
+{% block extrahead %}
+    <style type="text/css">
+        .forum.table > tbody > tr > td {
+            vertical-align: middle;
+        }
+
+        .forum .fa {
+            width: 1em;
+            text-align: center;
+        }
+
+        .forum.table th.cell-stat {
+            width: 12em;
+        }
+
+        .forum.table th.cell-stat-2x {
+            width: 14em;
+        }
+    </style>
+{% endblock %}
 {% block content %}
-    <h1>this is Dashboard page !!!</h1>
+    <h1><b>{{ user }}</b>, Welcome to your profile !!!</h1>
     <br>Account : {{ account }}<br>
     <br>Author : {{ author }}<br>
+    <div class="col-md-12">
+        <h3>Followers Post and news :</h3>
+        <table class="table forum table-striped">
+            <thead>
+            <tr>
+                <th class="">Status</th>
+                <th>Post</th>
+                <th class="text-center hidden-xs hidden-sm">Category</th>
+                <th class="text-center hidden-xs hidden-sm">Likes</th>
+                <th class="text-center hidden-xs hidden-sm">Date</th>
+            </tr>
+            </thead>
+            <tr>
+                <td class="text-center"><i class="fa fa-question fa-2x text-primary"></i></td>
+                <td>
+                    <h4><a href="#">Frequently Asked Questions</a><br>
+                        <small>Some description</small>
+                    </h4>
+                </td>
+                <td class="text-center hidden-xs hidden-sm"><a href="#">9 542</a></td>
+                <td class="text-center hidden-xs hidden-sm"><a href="#">89 897</a></td>
+                <td class="hidden-xs hidden-sm">by <a href="#">John Doe</a><br>
+                    <small><i class="fa fa-clock-o"></i> 3 months ago</small>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center"><i class="fa fa-exclamation fa-2x text-danger"></i></td>
+                <td>
+                    <h4><a href="#">Important changes</a><br>
+                        <small>Category description</small>
+                    </h4>
+                </td>
+                <td class="text-center hidden-xs hidden-sm"><a href="#">6532</a></td>
+                <td class="text-center hidden-xs hidden-sm"><a href="#">152123</a></td>
+                <td class="hidden-xs hidden-sm">by <a href="#">Jane Doe</a><br>
+                    <small><i class="fa fa-clock-o"></i> 1 years ago</small>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <hr>
+    <div class="col-md-12">
+        <h3>Post By You </h3>
+        <table class="table forum table-striped">
+            <thead>
+            <tr>
+                <th class="">Status</th>
+                <th>Post</th>
+                <th class="text-center hidden-xs hidden-sm">Category</th>
+                <th class="text-center hidden-xs hidden-sm">Likes</th>
+                <th class="text-center hidden-xs hidden-sm">Date</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td class="text-center"><i class="fa fa-question fa-2x text-primary"></i></td>
+                    <td>
+                        <h4><a href="#">{{ post.title }}</a><br>
+                            <small>{{ post.slug }}</small>
+                        </h4>
+                    </td>
+                    <td class="text-center hidden-xs hidden-sm"><a href="#">{{ post.category }}</a></td>
+                    <td class="text-center hidden-xs hidden-sm"><a href="#">{{ post.likes.count }}</a></td>
+                    <td class="hidden-xs hidden-sm">by <a href="#">{{ post.authors.all }}</a><br>
+                        <small><i class="fa fa-clock-o"></i> {{ post.created_date }}</small>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td class="">
+                        <h4><a href="#">Create your first Post</a><br></h4>
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <h3>liked by You </h3>
+        <table class="table forum table-striped">
+            <thead>
+            <tr>
+                <th class="">Status</th>
+                <th>Post</th>
+                <th class="text-center hidden-xs hidden-sm">Category</th>
+                <th class="text-center hidden-xs hidden-sm">Likes</th>
+                <th class="text-center hidden-xs hidden-sm">Date</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for like in likes %}
+                <tr>
+                    <td class="text-center"><i class="fa fa-question fa-2x text-primary"></i></td>
+                    <td>
+                        <h4><a href="#">{{ like.post }}</a><br>
+                            <small>{{ like.created_date }}</small>
+                        </h4>
+                    </td>
+                    <td class="text-center hidden-xs hidden-sm"><a href="#">{{ like.post.category }}</a></td>
+                    <td class="text-center hidden-xs hidden-sm"><a href="#">{{ like.post.likes.count }}</a></td>
+                    <td class="hidden-xs hidden-sm">by <a href="#">{{ like.author }}</a><br>
+                        <small><i class="fa fa-clock-o"></i> {{ like.post.created_date }}</small>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

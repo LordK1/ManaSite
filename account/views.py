@@ -23,13 +23,16 @@ thanks for watching :-P
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'account/dashboard.html'
     object = Account
+    model = Account
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
-        print('user', self.request.user)
-        context['user'] = self.request.user
-        context['account'] = self.object.objects.get_by_natural_key(self.request.user)
-        context['author'] = self.object.objects.get_author_by_natural_key(self.request.user)
+        account = self.object.objects.get_by_natural_key(self.request.user)
+        context['user'] = account.get_full_name()
+        context['account'] = account
+        context['author'] = account.author
+        context['posts'] = account.author.posts.all()
+        context['likes'] = account.author.likes.all()
         return context
 
     def get_queryset(self):

@@ -22,12 +22,13 @@
 
         $(document).ready(function () {
             {% comment %} LIKE BUTTON{% endcomment %}
+            var animationClass = "animated tada";
             $("button.likeButton").click(function () {
-                var animationClass = "animated bounce"
-                $("span[data-post-id=" + postId + "]").removeClass(animationClass);
+
                 var postId = $(this).attr("data-post-id");
                 var postSlug = $(this).attr("data-post-slug");
                 var url = "{% url 'like-post' pk='123456' %}".replace('123456', postId.toString());
+                $("span[data-post-id=" + postId + "]").removeClass(animationClass);
                 {# console.log("Like Post ID : " + postId + " postSlug : " + postSlug + " URL : " + url);#}
                 $.ajax({
                     url: url,
@@ -43,7 +44,7 @@
             });
             {% comment %} DISLIKE BUTTON {% endcomment %}
             $("button.dislikeButton").click(function () {
-                var animationClass = "animated swing"
+
                 var postId = $(this).attr("data-post-id");
                 var postSlug = $(this).attr("data-post-slug");
                 $("span[data-post-id=" + postId + "]").removeClass(animationClass);
@@ -61,8 +62,27 @@
                     }
                 });
             });
+            {# Follow Author #}
+            $("span.follow-author").click(function () {
+                var authorId = $(this).attr("data-author-id");
+                console.log("Author id is : " + authorId);
+                var url = "{% url 'follow-author' pk='123456' %}".replace('123456', authorId.toString());
+                console.log("Author id is : " + authorId + " URL : " + url);
+                var span = this ;
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function (result) {
+                        console.log('followed : ' + result.followed + ' follower : ' + result.follower + " message : " + result.message);
+                        $(span).addClass("animated rotateIn");
+                        $(span).find('i').addClass("fa fa-users fa-3x");
+                    },
+                    failure: function (data) {
+                        console.warn('follow-author : ' + authorId + ' Got and Error !');
+                    }
+                });
+            });
         });
-
 
     </script>
 {% endblock %}
